@@ -1,7 +1,7 @@
-import { getDocument, GlobalWorkerOptions, PDFDocumentProxy } from 'pdfjs-dist';
+import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 
-// Set the worker source to the local file
-GlobalWorkerOptions.workerSrc = '/assets/pdf.worker.min.js';
+// Set worker path
+GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${GlobalWorkerOptions.version}/pdf.worker.min.js`;
 
 const MAX_FILE_SIZE = 200 * 1024 * 1024; // 200MB
 const CHUNK_SIZE = 1024 * 1024; // 1MB chunks for processing

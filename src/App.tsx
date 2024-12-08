@@ -3,6 +3,7 @@ import { Tabs } from './components/ui/Tabs';
 import { Header } from './components/layout/Header';
 import { PDFViewer } from './components/pdf/PDFViewer';
 import { ChatPanel } from './components/chat/ChatPanel';
+import { ModelSelector } from './components/models/ModelSelector';
 import { Message, ChatState, OllamaModel } from './types';
 import { getInstalledModels } from './services/models';
 import { chatWithOllama } from './services/chat';
@@ -78,6 +79,10 @@ function App() {
     setState(prev => ({ ...prev, pdfText: text }));
   };
 
+  const handleModelSelect = (modelName: string) => {
+    setState(prev => ({ ...prev, selectedModel: modelName }));
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -89,18 +94,30 @@ function App() {
           <Tabs
             tabs={[
               { id: 'chat', label: 'Chat' },
+              { id: 'models', label: 'Models' },
               { id: 'flashcards', label: 'Flashcards' },
               { id: 'summary', label: 'Summary' }
             ]}
             activeTab={activeTab}
             onChange={setActiveTab}
           />
-          <ChatPanel
-            messages={state.messages}
-            isLoading={state.isLoading}
-            onSendMessage={handleSendMessage}
-            disabled={!state.selectedModel}
-          />
+          <div className="mt-4">
+            {activeTab === 'chat' && (
+              <ChatPanel
+                messages={state.messages}
+                isLoading={state.isLoading}
+                onSendMessage={handleSendMessage}
+                disabled={!state.selectedModel}
+              />
+            )}
+            {activeTab === 'models' && (
+              <ModelSelector
+                models={availableModels}
+                selectedModel={state.selectedModel}
+                onModelSelect={handleModelSelect}
+              />
+            )}
+          </div>
         </div>
       </main>
     </div>
